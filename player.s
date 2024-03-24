@@ -42,27 +42,23 @@ start:
 	call tilemap_init
 
 	call rasters_init
-	
+
+	call columns_init
+
 	call video_setup
 
 	call init_vbl
 
-
-
 	nextreg 7,%11 ; 28mhz
-
-
 	nextreg $4c,$ff ; set transparent colour outside the 0 to 9
-
     nextreg $68,%00000000   ;ula disable
-
     nextreg $15,%00000111 ; no low rez , LSU , no sprites , no over border
-
     nextreg $43,%00110000   ; select tilemap 1st palette
  
 frame_loop:
 	call wait_vbl
 	border 4
+	call columns_update
 	call rasters_update
 	call logo_update
 
@@ -80,6 +76,7 @@ include "logo.s"
 include "irq.s"
 include "video.s"
 include "tilemap.s"
+include "rasters.s"
 
 
     seg     CODE_SEG

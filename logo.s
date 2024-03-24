@@ -79,10 +79,8 @@ mul_hl_de:       ; (uint16)HL = (uint16)HL x (uint16)DE
     ret             ; =4+4+8+4+4+4+8+4+4+4+8+4+4+4+10 = 78T
 
 
-
-
 logo_pal_start:
-		incbin "logo.nxp"
+		incbin "gfx/logo.nxp"
 logo_pal_end:
 
 sine_table:
@@ -92,7 +90,7 @@ sine_table_end:
 
    	seg LAYER2_SEG
 logo_image_start:
-	incbin "logo.nxi"
+	incbin "gfx/logo.nxi"
 logo_image_end:
 
     seg     CODE_SEG

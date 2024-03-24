@@ -3,19 +3,22 @@
 
 LAYER2_CLIP_WINDOW   equ $18
 
+num_c_1 equ 118
+num_c_2 equ 90*2
+
+
 r1Y:    dw    0
-r2Y:    dw    rasters_2_mid-rasters_2_start
-r3Y:    dw    0
+r2Y:    dw    (num_c_2)
+r3Y:    dw    (num_c_2/3)*2
 r4Y:    dw    0
-r5Y:    dw    180
+r5Y:    dw    (num_c_2/4)*2
 r6Y:    dw    0
-r7Y:    dw    0
+r7Y:    dw    (num_c_2/5)*2
 r8Y:    dw    0
-r9Y:    dw   240
-r10Y:   dw   180
+r9Y:    dw   0
+r10Y:   dw   (num_c_2/8)*2
 
-
-rasters_init:
+columns_init:
        ld de,rasters_1_start
        ld bc,rasters_1_end - rasters_1_start
 .loop1
@@ -53,35 +56,15 @@ rasters_init:
 
        ret
 
-rasters_update:
+oops: ds 256
+
+columns_update:
 ;       border 1
-if 0
-var speed1=1.5;      3
-var speed2=3;        6
-
-	rY1-=speed1;
-	if (rY1<=-240) rY1=0;
-	rY5+=speed1;
-	if (rY5>=0) rY5=-180;
-	rY7-=speed1;
-	if (rY7<=-180) rY7=0;
-	rY9+=speed1;
-	if (rY9>=0) rY9=-240;
-
-	rY2+=speed2;
-	if (rY2>=0) rY2=-180;
-	rY4-=speed2;
-	if (rY4<=-240) rY4=0;
-	rY8-=speed2;
-	if (rY8<=-240) rY8=0;
-	rY10+=speed2;
-	if (rY10>=0) rY10=-180;
-endif
 
        ld hl,(r1Y)
        add hl,2
        ld (r1Y),hl
-       add hl,-(rasters_1_mid-rasters_1_start)
+       add hl,-num_c_1*2
        bit 7,h
        jr nz,.nwrap1
        ld (r1Y),hl
@@ -93,7 +76,7 @@ endif
 ;       add hl,-(rasters_2_mid-rasters_2_start)
        bit 7,h
        jr z,.nwrap2
-       add hl,rasters_2_mid-rasters_2_start
+       add hl,+num_c_2*2
        ld (r2Y),hl
 .nwrap2:
 
@@ -107,7 +90,7 @@ endif
        ld hl,(r4Y)
        add hl,4
        ld (r4Y),hl
-       add hl,-(rasters_1_mid-rasters_1_start)
+       add hl,-num_c_1*2
        bit 7,h
        jr nz,.nwrap4
        ld (r4Y),hl
@@ -115,11 +98,11 @@ endif
 
 
        // down standard
-      ld hl,(r5Y)
+       ld hl,(r5Y)
        add hl,-2
        bit 7,h
        jr z,.nwrap5
-       add hl,rasters_2_mid-rasters_2_start
+       add hl,+num_c_2*2
 .nwrap5:
        ld (r5Y),hl
 
@@ -133,7 +116,7 @@ endif
        ld hl,(r7Y)
        add hl,2
        ld (r7Y),hl
-       add hl,-(rasters_1_mid-rasters_1_start)
+       add hl,-num_c_2*2
        bit 7,h
        jr nz,.nwrap7
        ld (r7Y),hl
@@ -143,7 +126,7 @@ endif
        ld hl,(r8Y)
        add hl,4
        ld (r8Y),hl
-       add hl,-(rasters_2_mid-rasters_2_start)
+       add hl,-num_c_1*2
        bit 7,h
        jr nz,.nwrap8
        ld (r8Y),hl
@@ -155,7 +138,7 @@ endif
        add hl,-2
        bit 7,h
        jr z,.nwrap9
-       add hl,rasters_1_mid-rasters_1_start
+       add hl,+num_c_1*2
 .nwrap9:
        ld (r9Y),hl
 
@@ -165,15 +148,11 @@ endif
        add hl,-4
        bit 7,h
        jr z,.nwrap10
-       add hl,rasters_2_mid-rasters_2_start
+       add hl,num_c_2*2
 .nwrap10:
        ld (r10Y),hl
 
-
-
-
-
-      call rasters_fill
+       call rasters_fill
        ret
 
 rasters_fill:
@@ -442,21 +421,24 @@ PAL_LAYER3_2  macro
 
 DNA_FADE_PAL_X equ 256
 ; pass Y
+;1__4_6_89_
+
+;_23_5_7__0
 
 rasters_1_start:
-       incbin "1__4_6_89_.nxi"
+       incbin "gfx/1__4_6_89_.nxi"
 rasters_1_mid
-       incbin "1__4_6_89_.nxi"
+       incbin "gfx/1__4_6_89_.nxi"
 rasters_1_end:
 
 rasters_1_pal:
-       incbin "1__4_6_89_.nxp"
+       incbin "gfx/1__4_6_89_.nxp"
 
 rasters_2_start:
-       incbin "_23_5_7__0.nxi"
+       incbin "gfx/_23_5_7__0.nxi"
 rasters_2_mid
-       incbin "_23_5_7__0.nxi"
+       incbin "gfx/_23_5_7__0.nxi"
 rasters_2_end:
 
 rasters_2_pal:
-       incbin "_23_5_7__0.nxp"
+       incbin "gfx/_23_5_7__0.nxp"
