@@ -40,7 +40,7 @@ init_vbl:
     ; not dma
     nextreg $cc,%10000000    ; NMI will interrupt dma
     nextreg $cd,0            ; ct 0 no interrupt dma
-    nextreg $cd,0            ; ct 0 no interrupt dma
+    nextreg $ce,0            ; ct 0 no interrupt dma
 
     im 2
 
@@ -52,7 +52,6 @@ vbl:
 	di
 
 	push af
-
 
 	nextreg $c4,3				; ULA interrupt
 

@@ -117,8 +117,7 @@ ras_table_start:
 ras_table_end:
 
 rasters_update:
-    ret
-    
+   
     call rasters_ang_update 
     call rasters_set_y
 
